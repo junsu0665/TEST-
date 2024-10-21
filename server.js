@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
+const os = require('os');
 
 const app = express();
 const port = process.env.PORT || 8443;
@@ -82,15 +83,15 @@ app.use((err, req, res, next) => {
     res.status(500).send('Internal Server Error');
 });
 
+// 서버 상태 확인용 엔드포인트 추가
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
 // HTTP 서버 실행
 const httpServer = http.createServer(app);
 httpServer.listen(port, '0.0.0.0', () => {
     console.log(`HTTP Server running on port ${port}`);
 }).on('error', (err) => {
     console.error('Error starting HTTP server:', err);
-});
-
-// 서버 상태 확인용 엔드포인트 추가
-app.get('/health', (req, res) => {
-    res.status(200).send('OK');
 });
