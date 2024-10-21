@@ -36,6 +36,42 @@ function writeGames(games) {
     }
 }
 
+// 루트 경로 핸들러 추가
+app.get('/', (req, res) => {
+    const games = readGames();
+    let html = '<h1>체육대회 서버</h1>';
+    html += '<h2>게임 목록:</h2>';
+    html += '<ul>';
+    games.forEach(game => {
+        html += `<li>${game.name}: ${game.score.join(' vs ')}</li>`;
+    });
+    html += '</ul>';
+
+    // 순위 계산
+    const teamScores = {};
+    games.forEach(game => {
+        game.score.forEach((score, index) => {
+            const teamName = game.teams[index];
+            if (!teamScores[teamName]) {
+                teamScores[teamName] = 0;
+            }
+            teamScores[teamName] += score;
+        });
+    });
+
+    const sortedTeams = Object.entries(teamScores)
+        .sort((a, b) => b[1] - a[1]);
+
+    html += '<h2>순위:</h2>';
+    html += '<ol>';
+    sortedTeams.forEach(([team, score]) => {
+        html += `<li>${team}: ${score}점</li>`;
+    });
+    html += '</ol>';
+
+    res.send(html);
+});
+
 app.get('/api/games', (req, res) => {
     const games = readGames();
     res.json(games);
