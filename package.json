@@ -1,10 +1,14 @@
 {
-  "description": "",
-  "dependencies": {
-    "express": "^4.21.1"
-  },
+  "name": "sports-day-backend",
+  "version": "1.0.0",
+  "description": "Backend for Sports Day Management",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "build": "echo 'No build step required'"
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "cors": "^2.8.5",
+    "body-parser": "^1.19.0"
   }
 }
